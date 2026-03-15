@@ -141,8 +141,9 @@ export default function AIChat({ userRole }) {
     setLoading(true)
 
     try {
-      // Build conversation history for API (exclude toolCallLog, timestamp)
+      // Build conversation history for API (exclude toolCallLog, timestamp, and initial greeting)
       const history = messages
+        .slice(1) // skip the initial greeting which is not a real conversation turn
         .filter((m) => m.role !== 'system')
         .map((m) => ({ role: m.role, content: m.content }))
 

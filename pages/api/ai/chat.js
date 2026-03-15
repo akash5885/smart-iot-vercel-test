@@ -44,7 +44,7 @@ async function handler(req, res) {
       return res.status(500).json({ error: 'Invalid GROQ_API_KEY. Please check your environment variables.' })
     }
 
-    if (err?.status === 400) {
+    if (err?.status === 400 || err?.status === 422) {
       return res.status(500).json({ error: `AI model error: ${err?.message || 'Bad request'}` })
     }
 
