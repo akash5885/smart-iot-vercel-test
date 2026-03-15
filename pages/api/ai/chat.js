@@ -34,23 +34,25 @@ async function handler(req, res) {
 
     return res.status(200).json({ response, toolCallLog })
   } catch (err) {
-    console.error('Agent error:', err?.message || err)
+    const status = err?.status ?? err?.error?.status
+    const message = err?.message ?? err?.error?.message
+    console.error('Agent error:', status, message || err)
 
-    if (err?.status === 429) {
+    if (status === 429) {
       return res.status(429).json({ error: 'AI rate limit reached. Please wait a moment and try again.' })
     }
 
-    if (err?.status === 401) {
+    if (status === 401) {
       return res.status(500).json({ error: 'Invalid GROQ_API_KEY. Please check your environment variables.' })
     }
 
-    if (err?.status === 400 || err?.status === 422) {
-      return res.status(500).json({ error: `AI model error: ${err?.message || 'Bad request'}` })
+    if (status === 400 || status === 422) {
+      return res.status(500).json({ error: `AI model error: ${message || 'Bad request'}` })
     }
 
     return res.status(500).json({
       error: 'AI agent failed. Please try again.',
-      detail: process.env.NODE_ENV === 'development' ? err?.message : undefined
+      detail: process.env.NODE_ENV === 'development' ? message : undefined
     })
   }
 }
