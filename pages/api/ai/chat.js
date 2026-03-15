@@ -30,7 +30,7 @@ async function handler(req, res) {
       role,
       message: message.substring(0, 1000),
       response: response.substring(0, 2000),
-    }).catch(console.error)
+    }).then(({ error }) => { if (error) console.error('Chat log error:', error) })
 
     return res.status(200).json({ response, toolCallLog })
   } catch (err) {
