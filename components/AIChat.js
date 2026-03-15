@@ -159,7 +159,7 @@ export default function AIChat({ userRole }) {
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data.error || 'Failed to get response')
+        setError(data.detail ? `${data.error} — ${data.detail}` : (data.error || 'Failed to get response'))
         return
       }
 

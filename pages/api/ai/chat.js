@@ -52,7 +52,7 @@ async function handler(req, res) {
 
     return res.status(500).json({
       error: 'AI agent failed. Please try again.',
-      detail: process.env.NODE_ENV === 'development' ? message : undefined
+      detail: message || String(err)
     })
   }
 }
